@@ -16,13 +16,13 @@ def add_new_point():
     # Create 2D or 3D coordinates
     x = random.uniform(0, area_size)
     y = random.uniform(0, area_size)
-    z = 0 # revise this code if necessary
-    points_x.append(x), points_y.append(y), points_z # revise this code if necessary
-    return x, y # revise this code if necessary
+    z = random.uniform(0, area_size) # revise this code if necessary
+    points_x.append(x), points_y.append(y), points_z.append(z) # revise this code if necessary
+    return x, y, z # revise this code if necessary
 
-def is_in(x, y): # revise this code if necessary
+def is_in(x, y, z): # revise this code if necessary
     global num_inner_points
-    if (x - area_size/2)**2 + (y - area_size/2)**2 < (area_size/2)**2: # check a point is in a circle or sphere here
+    if (x - area_size/2)**2 + (y - area_size/2)**2  + (z - area_size/2)**2< (area_size/2)**2: # check a point is in a circle or sphere here
         num_inner_points += 1 # count the number of points in a circle or sphere here
         return 'blue'
     else:
@@ -46,7 +46,8 @@ def draw_figure_2d(xs = points_x, ys = points_y, color = points_color):
     plt.show()
 
 def draw_figure_3d(xs = points_x, ys = points_y, zs = points_z, color = points_color):
-    pi = round(0, 4) # calculate the value of pi here
+    pi = round(6 * num_inner_points / len(points_x), 4) # calculate the value of pi here
+
 
     fig = plt.figure(figsize=(5, 5))
     ax = fig.add_subplot(111, projection='3d')
@@ -61,16 +62,16 @@ def draw_figure_3d(xs = points_x, ys = points_y, zs = points_z, color = points_c
     plt.show()
 
 def extract_inner_points():
-    for x, y, c in zip(points_x, points_y, points_color):
+    for x, y, z, c in zip(points_x, points_y, points_z, points_color):
         if c == 'blue':
             # the variables below should contain only the coordinates of inner points
             inner_points_x.append(x)
             inner_points_y.append(y)
-            inner_points_z = [] # revise this code if necessary
+            inner_points_z.append(z) # revise this code if necessary
             inner_points_color.append('blue') # revise this code if necessary
 
 if __name__ == "__main__":
-    generate_points(500)
-    #extract_inner_points()
-    draw_figure_2d() # or draw_figure_3d()
+    generate_points(100000)
+    extract_inner_points()
+    draw_figure_3d(xs=inner_points_x, ys=inner_points_y, zs=inner_points_z, color=inner_points_color)
     
